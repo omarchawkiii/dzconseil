@@ -12,14 +12,27 @@ class ListingResource extends JsonResource
     /**
      * @param  Request  $request
      */
-    public static $wrap = 'data';
     public function toArray($request): array
     {
         // TODO: fill in the gaps
 
-        return  parent::toArray($request);
         return [
-
+             'id'               =>$this->id ,
+             'owner_id'         =>$this->owner_id ,
+             'name'             =>$this->name ,
+             'slug'             =>$this->slug ,
+             'description'      =>$this->description ,
+             'adults'           =>$this->adults ,
+             'children'         =>$this->children ,
+             'is_pets_allowed'  =>$this->is_pets_allowed ,
+             'base_price'       =>$this->base_price ,
+             'cleaning_fee'     =>$this->cleaning_fee ,
+             'image_url'        =>$this->image_url ,
+             'weekly_discount'  =>$this->weekly_discount ,
+             'monthly_discount' =>$this->monthly_discount ,
+             'special_prices'   =>$this->special_prices ,
         ];
     }
 }
+
+

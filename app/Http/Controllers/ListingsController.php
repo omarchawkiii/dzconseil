@@ -29,9 +29,6 @@ class ListingsController
 
     public function store(ListingRequest $request)
     {
-
-
-
         $listing = Listing::create([
             'name'             => $request->name ,
             'description'      => $request->description ,
@@ -44,18 +41,10 @@ class ListingsController
             'monthly_discount' => $request->monthly_discount ,
         ]) ;
 
-        if($request->image_url)
-        {
-            info('testt22');
-            $listing->addMedia($request->image_url)->toMediaCollection();
-        }
 
-        //$listing = $listing->get(["owner_id","slug"]) ;
-        info('testt');
-        info($listing->getFirstMediaUrl());
-
+        $listing->addMediaFromRequest('iamge_url')->toMediaCollection('images');
+        $listing = $listing->get(["owner_id","slug"]) ;
         return response(['data' => new ListingResource($listing)], 201);
-
 
     }
 
@@ -69,13 +58,11 @@ class ListingsController
             'is_pets_allowed'  => $request->is_pets_allowed ,
             'base_price'       => $request->base_price ,
             'cleaning_fee'     => $request->cleaning_fee ,
-            'image'            => $request->image ,
             'weekly_discount'  => $request->weekly_discount ,
             'monthly_discount' => $request->monthly_discount ,
         ]) ;
 
-
-     //   $listing = $listing->get(["owner_id","slug"]) ;
+        $listing->addMediaFromRequest('iamge_url')->toMediaCollection('images');
         return response(['data' => new ListingResource($listing)], 200);
 
 

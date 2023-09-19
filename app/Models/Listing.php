@@ -70,7 +70,7 @@ class Listing extends Model implements HasMedia
      * Relationships
      * ------------------------------------------
      */
-    public function owner():beLongsTo
+    public function owner()
     {
         // TODO: implement this relationship
         //      NB: set the method type hint

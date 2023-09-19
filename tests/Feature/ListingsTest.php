@@ -25,13 +25,13 @@ class ListingsTest extends TestCase
 
     public function test_index()
     {
-        $this->withoutExceptionHandling() ;
         Listing::factory()
             ->has(SpecialPrice::factory())
             ->count(3)
             ->create();
 
-        $this->json('get', $this->endpoint)
+        $this->authenticated()
+            ->json('get', $this->endpoint)
             ->assertOk()
             ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
