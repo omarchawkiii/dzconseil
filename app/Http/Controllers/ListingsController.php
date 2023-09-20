@@ -18,13 +18,11 @@ class ListingsController
 
     public function index()
     {
-
         return ListingResource::collection(Listing::get()) ;
     }
 
     public function show(Listing $listing)
     {
-
         return new ListingResource($listing::with('specialPrices')->first()) ;
     }
 
@@ -48,8 +46,6 @@ class ListingsController
             $listing->addMediaFromRequest('image')->toMediaCollection('default');
         }
 
-        //$listing = $listing->get(["owner_id","slug","image_url"]) ;
-
         return response(['data' => new ListingResource($listing)], 201);
 
     }
@@ -72,16 +68,10 @@ class ListingsController
 
         if($request->hasFile('image') && $request->image != null )
         {
-
             $listing->addMediaFromRequest('image')->toMediaCollection('default');
         }
 
-
-
         return response(['data' => new ListingResource($listing)], 200);
-
-     //   return response(['data' => new ListingResource($listing->get())], 201);
-
 
     }
 
