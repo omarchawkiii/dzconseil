@@ -17,9 +17,9 @@ class SpecialPriceResource extends JsonResource
         // TODO: fill in the gaps
 
         return [
-            // 'id'    => ...,
-            // 'date'  => ...,
-            // 'price' => ...,
+             'id'    => $this->id,
+             'date'  => $this->date,
+             'price' => $this->price,
         ];
     }
 }

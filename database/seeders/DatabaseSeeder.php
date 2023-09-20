@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Listing;
 use App\Models\SpecialPrice;
 
+use Faker\Factory as Faker;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -24,7 +26,14 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         User::factory(10)->create();
-        Listing::factory(2)->create() ;
+        $faker = Faker::create();
+        $listings = Listing::factory(2)->create() ;
+        $imageUrl = $faker->imageUrl(640,480, null, false);
+        foreach($listings  as $listing)
+        {
+            $listing->addMediaFromUrl($imageUrl)->toMediaCollection('default');
+        }
+
         SpecialPrice::factory(1)->create() ;
     }
 }

@@ -95,6 +95,8 @@ class Listing extends Model implements HasMedia
         //          - set the method type hint
         //return 'test' ;
         //return $this?->getFirstMediaUrl() ?? null;
+        return $this->getFirstMediaUrl('default');
+
     }
 
     /*
@@ -123,7 +125,7 @@ class Listing extends Model implements HasMedia
             $cost['nights_count'] = $checkin->diff($checkout)->days;
             $cost['nights_cost'] = $cost['nights_count'] * $this->base_price ;
             $cost['discount'] =$this->calculateDiscount( $cost['nights_count'] , $cost['nights_cost'] );
-            $cost['cleaning_fee'] = $cost['nights_count'] * $this->cleaning_fee ;
+            $cost['cleaning_fee'] = $this->cleaning_fee ;
             $cost['total'] = $cost['nights_cost'] + $cost['discount'] + $cost['cleaning_fee'];
 
             return $cost;
@@ -142,10 +144,10 @@ class Listing extends Model implements HasMedia
             $nights_count < 7 => 0,
 
             // case 2: if the number of nights is greater than or equal to 7 and lower than 28, apply the weekly discount percentage
-            $nights_count>=7 && $nights_count <28 => $nights_cost * $this->weekly_discount ,
+            $nights_count>=7 && $nights_count <28 =>( $nights_cost * $this->weekly_discount) * -1 ,
 
             // case 3: if the number of nights is greater than or equal to 28, apply the monthly discount percentage
-            $nights_count>28 => $nights_cost * $this->monthly_discount ,
+            $nights_count>=28 => ($nights_cost * $this->monthly_discount ) * -1 ,
         };
     }
 }

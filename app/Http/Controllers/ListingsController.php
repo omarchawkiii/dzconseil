@@ -19,12 +19,13 @@ class ListingsController
     public function index()
     {
 
-        return response()->json(Listing::with('owner')->get()) ;
+        return ListingResource::collection(Listing::get()) ;
     }
 
     public function show(Listing $listing)
     {
-        return ListingResource::collection($listing::with('specialPrices')->get()) ;
+
+        return new ListingResource($listing::with('specialPrices')->first()) ;
     }
 
     public function store(ListingRequest $request)
@@ -42,15 +43,21 @@ class ListingsController
         ]) ;
 
 
-        $listing->addMediaFromRequest('iamge_url')->toMediaCollection('images');
-        $listing = $listing->get(["owner_id","slug"]) ;
+        if($request->hasFile('image') && $request->image != null)
+        {
+            $listing->addMediaFromRequest('image')->toMediaCollection('default');
+        }
+
+        //$listing = $listing->get(["owner_id","slug","image_url"]) ;
+
         return response(['data' => new ListingResource($listing)], 201);
 
     }
 
     public function update(ListingRequest $request , Listing $listing)
     {
-        $listing = Listing::find($listing->id)->update([
+
+        $listing->update([
             'name'             => $request->name ,
             'description'      => $request->description ,
             'adults'           => $request->adults ,
@@ -62,8 +69,18 @@ class ListingsController
             'monthly_discount' => $request->monthly_discount ,
         ]) ;
 
-        $listing->addMediaFromRequest('iamge_url')->toMediaCollection('images');
+
+        if($request->hasFile('image') && $request->image != null )
+        {
+
+            $listing->addMediaFromRequest('image')->toMediaCollection('default');
+        }
+
+
+
         return response(['data' => new ListingResource($listing)], 200);
+
+     //   return response(['data' => new ListingResource($listing->get())], 201);
 
 
     }
